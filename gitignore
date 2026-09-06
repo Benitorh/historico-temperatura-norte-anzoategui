@@ -1,0 +1,29 @@
+# Entornos virtuales de Python
+.venv/
+venv/
+env/
+ENV/
+bin/
+lib/
+include/
+
+# Caché y archivos compilados
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Datos y descargas locales (opcional pero recomendado)
+*.csv
+*.xlsx
+*.xls
+!Temperatura_minima_ERA_5_a_20_años.csv
