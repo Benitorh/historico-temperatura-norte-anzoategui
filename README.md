@@ -8,8 +8,7 @@ El dashboard ha sido desarrollado cumpliendo con la totalidad de los requisitos 
 ## 🔗 Fuente de Datos (ERA5 desde Climate Engine de Google)
 
 Los datos climáticos utilizados como base provienen del reanálisis global de alta resolución **ERA5-Land**, procesados mediante Google Earth Engine (GEE).
-* **Enlace de Descarga en Climate Engine (Dataset de Referencia):** [Fuente: ERA5-Land Temperature de Engine Climate en Google ](https://www.climateengine.org) *(Nota: Puedes sustituir este enlace por el enlace público específico de tu dataset en Kaggle).*
-
+* **Enlace de Descarga en Climate Engine (Dataset de Referencia):** [Fuente: ERA5-Land Temperature de Engine Climate en Google ](https://www.climateengine.org) 
 ---
 
 ## ⚡ Requisitos Técnicos Implementados (Rúbrica del Proyecto)
