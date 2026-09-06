@@ -1,4 +1,4 @@
-# Dashboard de Análisis de Temperaturas Mínimas (ERA5) - Zona Metropolitana del Estado Anzoategui 🌦️
+# Dashboard de Análisis de Temperaturas Mínimas (ERA5) en Zona Metropolitana del Estado Anzoategui  durante ek Periodo 2006-2026🌦️
 
 Este proyecto consiste en un **Dashboard Climático Interactivo** de nivel profesional diseñado y desarrollado con **Python**, **Streamlit**, **Pandas** y **Plotly**. La aplicación web permite explorar y analizar un conjunto de datos histórico de **20 años de registros diarios** de temperaturas mínimas (2006-2026) para la zona metropolitana del Estado Anzoategui en Venezuela, obtenidos a partir del reanálisis **ERA5-Land** de la Unión Europea / Copernicus.
 
@@ -6,10 +6,10 @@ El dashboard ha sido desarrollado cumpliendo con la totalidad de los requisitos 
 
 ---
 
-## 🔗 Fuente de Datos (Dataset)
+## 🔗 Fuente de Datos (ERA5 desde Climate Engine de Google)
 
 Los datos climáticos utilizados como base provienen del reanálisis global de alta resolución **ERA5-Land**, procesados mediante Google Earth Engine (GEE).
-* **Enlace de Descarga en Kaggle (Dataset de Referencia):** [ERA5-Land Temperature and Climate Dataset on Kaggle](https://www.kaggle.com/datasets/ecmwf/era5-land) *(Nota: Puedes sustituir este enlace por el enlace público específico de tu dataset en Kaggle).*
+* **Enlace de Descarga en Climate Engine (Dataset de Referencia):** [Fuente: ERA5-Land Temperature de Engine Climate en Google ](https://www.climateengine.org) *(Nota: Puedes sustituir este enlace por el enlace público específico de tu dataset en Kaggle).*
 
 ---
 
