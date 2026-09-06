@@ -140,8 +140,8 @@ def main():
     st.title("🌡️ Dashboard Climático: Análisis de Temperaturas Mínimas ERA5")
     st.markdown(
         """
-        Este dashboard interactivo permite explorar **20 años de datos de temperatura mínima diaria** (ERA5)
-        para la región de análisis. Utiliza los filtros en la barra lateral para recortar la serie temporal,
+        Este dashboard interactivo permite explorar *Temperaturas mínima diaria** (Fuente:ERA5)
+        para la zona metropolitana del estado Anzoátegui durante el periodo 2006-2026. Utiliza los filtros en la barra lateral para recortar la serie temporal,
         analizar estaciones específicas del año o subir tu propia base de datos de manera dinámica.
         """
     )

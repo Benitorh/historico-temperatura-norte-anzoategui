@@ -1,6 +1,6 @@
 # Dashboard de Análisis de Temperaturas Mínimas (ERA5) - Zona Metropolitana del Estado Anzoategui 🌦️
 
-Este proyecto consiste en un **Dashboard Climático Interactivo** de nivel profesional diseñado y desarrollado con **Python**, **Streamlit**, **Pandas** y **Plotly**. La aplicación web permite explorar y analizar un conjunto de datos histórico de **20 años de registros diarios** de temperaturas mínimas (2006-2026) para la región de Cuyo, Argentina, obtenidos a partir del reanálisis **ERA5-Land** de la Unión Europea / Copernicus.
+Este proyecto consiste en un **Dashboard Climático Interactivo** de nivel profesional diseñado y desarrollado con **Python**, **Streamlit**, **Pandas** y **Plotly**. La aplicación web permite explorar y analizar un conjunto de datos histórico de **20 años de registros diarios** de temperaturas mínimas (2006-2026) para la zona metropolitana del Estado Anzoategui en Venezuela, obtenidos a partir del reanálisis **ERA5-Land** de la Unión Europea / Copernicus.
 
 El dashboard ha sido desarrollado cumpliendo con la totalidad de los requisitos del **Proyecto Final** de la formación en Análisis de Datos.
 
