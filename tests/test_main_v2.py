@@ -11,7 +11,7 @@ spec.loader.exec_module(module)
 
 
 class TestMainV2(unittest.TestCase):
-    def test_default_csv_loads_and_uses_southern_seasons(self):
+    def test_default_csv_loads_and_uses_rainy_and_dry_seasons(self):
         df = module.cargar_datos(None)
 
         self.assertIsNotNone(df)
@@ -19,8 +19,11 @@ class TestMainV2(unittest.TestCase):
         self.assertIn('Temperatura Mínima (°C)', df.columns)
         self.assertIn('Estación', df.columns)
 
-        expected = {'Verano', 'Otoño', 'Invierno', 'Primavera'}
+        expected = {'Temporada de lluvias', 'Temporada de sequía'}
         self.assertTrue(expected.issubset(set(df['Estación'].unique())))
+
+    def test_module_has_streamlit_entrypoint(self):
+        self.assertTrue(hasattr(module, 'main'))
 
 
 if __name__ == '__main__':
