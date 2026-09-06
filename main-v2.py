@@ -26,24 +26,33 @@ st.markdown("---")
 @st.cache_data
 def cargar_datos(file_obj):
     def normalizar_nombre(col):
-        return str(col).strip().lower()
+        texto = str(col).strip().lower()
+        for reemplazo in [" ", "-", "_", "/", "(", ")", ".", ":"]:
+            texto = texto.replace(reemplazo, "")
+        return texto
 
     def detectar_columna_fecha(df_raw):
         for col in df_raw.columns:
             nombre = normalizar_nombre(col)
             if any(palabra in nombre for palabra in [
                 "date", "fecha", "time", "timestamp", "datetime", "fecha_hora",
-                "unnamed: 0", "unnamed:0"
+                "unnamed0", "unnamed", "index"
             ]):
                 return col
 
         for col in df_raw.columns:
             try:
                 serie = pd.to_datetime(df_raw[col], errors="coerce")
-                if serie.notna().sum() > 0:
+                validos = serie.notna().sum()
+                if validos > max(2, len(df_raw) * 0.05):
                     return col
             except Exception:
                 continue
+
+        for col in df_raw.columns:
+            serie = df_raw[col].astype(str).str.strip()
+            if serie.str.contains(r"^\d{4}-\d{2}-\d{2}", na=False).any():
+                return col
 
         return None
 
@@ -51,17 +60,36 @@ def cargar_datos(file_obj):
         for col in df_raw.columns:
             nombre = normalizar_nombre(col)
             if any(palabra in nombre for palabra in [
-                "temp", "tmin", "tmax", "tmean", "temperatura", "minimum",
-                "valor", "minima", "mínima"
+                "temp", "tmin", "tmax", "tmean", "temperatura", "minimum", "minima",
+                "valor", "mínima", "averagepolygon"
             ]):
                 return col
 
         num_cols = df_raw.select_dtypes(include=["number"]).columns.tolist()
         num_cols = [
             col for col in num_cols
-            if not any(palabra in normalizar_nombre(col) for palabra in ["id", "year", "month", "año", "mes", "unnamed"])
+            if not any(palabra in normalizar_nombre(col) for palabra in [
+                "id", "year", "month", "año", "mes", "unnamed", "date", "fecha", "time", "timestamp"
+            ])
         ]
-        return num_cols[0] if num_cols else None
+        if not num_cols:
+            return None
+
+        # Si existen varias columnas numéricas, se evita elegir una de resumen (promedio, índice, etc.)
+        prioridad = []
+        for col in num_cols:
+            nombre = normalizar_nombre(col)
+            peso = 0
+            if "temp" in nombre:
+                peso += 5
+            if "min" in nombre or "mín" in nombre:
+                peso += 4
+            if "mean" in nombre or "average" in nombre:
+                peso -= 2
+            prioridad.append((peso, col))
+
+        prioridad.sort(reverse=True)
+        return prioridad[0][1]
 
     if file_obj is not None:
         try:
@@ -115,10 +143,14 @@ def cargar_datos(file_obj):
     df['Mes_Nombre'] = df['Mes'].map(meses_es)
 
     def obtener_estacion(mes):
-        if mes in [11, 12, 1, 2, 3, 4]:
-            return 'Temporada de sequia'
-        elif mes in [5, 6, 7, 8, 9, 10]:
-            return 'Temporada de lluvias'
+        if mes in [12, 1, 2]:
+            return 'Verano'
+        elif mes in [3, 4, 5]:
+            return 'Otoño'
+        elif mes in [6, 7, 8]:
+            return 'Invierno'
+        elif mes in [9, 10, 11]:
+            return 'Primavera'
         return 'Sin dato'
 
     df['Estación'] = df['Mes'].apply(obtener_estacion)
@@ -163,9 +195,20 @@ if df is not None:
         if pd.isna(valor):
             return ""
         texto = str(valor).strip()
-        texto = texto.replace("Temporada de sequía", "Temporada de sequia")
-        texto = texto.replace("Temporada de sequia", "Temporada de sequia")
-        return texto
+        texto = texto.replace("Temporada de sequía", "Verano")
+        texto = texto.replace("Temporada de sequia", "Verano")
+        texto = texto.replace("Temporada de lluvias", "Invierno")
+        texto = texto.lower()
+
+        if "verano" in texto:
+            return "Verano"
+        if "otoño" in texto or "otono" in texto:
+            return "Otoño"
+        if "invierno" in texto:
+            return "Invierno"
+        if "primavera" in texto:
+            return "Primavera"
+        return texto.title() if texto else ""
 
     # FILTRO DINÁMICO 2: Estaciones del Año (Multi-selección)
     estaciones_validas = df["Estación"].map(normalizar_estacion)
@@ -321,7 +364,7 @@ if df is not None:
             color_discrete_sequence=["#1f77b4"]
         )
         fig_linea.update_layout(hovermode="x unified")
-        st.plotly_chart(fig_linea, use_container_width=True)
+        st.plotly_chart(fig_linea, width="stretch")
         
     # GRÁFICO 2: Climatología Mensual Promedio (Ciclo Estacional Anual)
     with tab_climatologia:
@@ -345,7 +388,7 @@ if df is not None:
             title="Ciclo Climatológico Mensual Promedio",
             labels={"Mes_Nombre": "Mes", "Temperatura Mínima (°C)": "Temp. Mínima Promedio (°C)"}
         )
-        st.plotly_chart(fig_barras, use_container_width=True)
+        st.plotly_chart(fig_barras, width="stretch")
         
     # GRÁFICO 3: Box Plot Interanual (Variabilidad y Dispersión por Año)
     with tab_cajas:
@@ -360,7 +403,7 @@ if df is not None:
             title="Variabilidad y Rango de Temperatura Mínima por Año",
             labels={"Año": "Año", "Temperatura Mínima (°C)": "Temperatura Mínima (°C)"}
         )
-        st.plotly_chart(fig_caja, use_container_width=True)
+        st.plotly_chart(fig_caja, width="stretch")
         
     # GRÁFICO 4: Histograma de Distribución y Frecuencias
     with tab_distribucion:
@@ -375,7 +418,7 @@ if df is not None:
             title="Distribución de Frecuencia de Días Registrados",
             labels={"count": "Cantidad de Días", "Temperatura Mínima (°C)": "Temperatura Mínima (°C)"}
         )
-        st.plotly_chart(fig_hist, use_container_width=True)
+        st.plotly_chart(fig_hist, width="stretch")
         
     st.markdown("---")
 
@@ -395,13 +438,13 @@ if df is not None:
             data=csv_data,
             file_name="temperaturas_filtradas_era5.csv",
             mime="text/csv",
-            use_container_width=True
+            width="stretch"
         )
         
     # Requisito 6: Objeto interactivo para visualizar la tabla de datos completa
     expander_tabla = st.expander("🔍 Ver Tabla de Datos Filtrada Completa", expanded=False)
     with expander_tabla:
-        st.dataframe(df_filtrado, use_container_width=True)
+        st.dataframe(df_filtrado, width="stretch")
 
 else:
     st.error("No se pudieron cargar los datos. Por favor, verifica el formato de tu archivo subido.")

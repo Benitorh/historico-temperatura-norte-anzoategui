@@ -105,6 +105,6 @@ streamlit run main-v2.py
 ---
 
 ## 👥 Autor
-* **Nombre:** [Tu Nombre Completo]
+* **Nombre:** [Benito Rodriguez]
 * **Curso:** Fundamentos de Programación y Análisis de Datos con Python
 * **Fecha de Entrega:** 4 de Septiembre de 2026
